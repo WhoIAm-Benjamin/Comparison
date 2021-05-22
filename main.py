@@ -4,10 +4,10 @@ import sys
 import shutil
 import random
 
-folder_logs = os.path.join('D:', 'logs')
-if not os.path.exists(folder_logs):
-	os.mkdir(folder_logs)
+folder_logs = os.getcwd()
 
+moved = 0
+removed = 0
 
 logging.basicConfig(level = logging.DEBUG,
 					format = '%(asctime)s : %(levelname)s : %(message)s',
@@ -15,9 +15,12 @@ logging.basicConfig(level = logging.DEBUG,
 					filemode = 'w')
 
 def comparison(file_1, file_2):
+	global moved, removed
 	if file_1 == file_2:
 		logging.debug('file_1 == file_2')
+		removed += 1
 		return True
+	moved += 1
 	return False
 
 folder = input('Enter folder for deleted copies: ').replace('/', '\\')
@@ -73,8 +76,8 @@ try:
 					except shutil.Error:
 						logging.debug('except shutil.Error')
 						name = os.path.basename(path_0)
-						logging.debug('Name is "'+name+'"') # C:\Users\Трясучкин\Desktop\relate
-						name = name.split('.') # F:\Personal\Relations\Masha_Dadushkina
+						logging.debug('Name is "'+name+'"') 
+						name = name.split('.')
 						p = 1
 						while True:
 							recovery = name[-2]
@@ -119,3 +122,6 @@ except IndexError:
 finally:
 	logging.debug('Work is successfull')
 	print('End of work')
+
+print('\nMoved - {}\nRemoved - {}'.format(moved, removed))
+input()
